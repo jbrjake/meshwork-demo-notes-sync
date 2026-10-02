@@ -1,7 +1,7 @@
 ---
 id: sy-0wxtj90
 title: Exchange missing changes between replicas by version vector
-status: open
+status: done
 category: sync
 verify: run cargo test sync_
 docs:
@@ -19,3 +19,5 @@ Carrying the changes between devices is the caller's job.
 ## log
 - 2026-10-02T17:18Z created
 - 2026-10-02T17:18Z cover docs/PROTOCOL.md#sp-sync @56084d78bcc1
+- 2026-10-02T17:18Z open→doing — claimed by claude (602c381b-d7db-491e-8df6-85682e6152ed)
+- 2026-10-02T17:19Z doing→done — verify exit 0 @ 78213d2+1
