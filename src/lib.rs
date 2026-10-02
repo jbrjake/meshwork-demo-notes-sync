@@ -4,3 +4,8 @@
 //! document. Replicas exchange the changes the other has not seen and resolve
 //! conflicts the same way everywhere. Moving changes between replicas is the
 //! caller's concern. The contract is `docs/PROTOCOL.md`.
+
+mod change;
+pub mod log;
+
+pub use change::{Change, Fields};
