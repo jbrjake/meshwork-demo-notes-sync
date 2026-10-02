@@ -1,5 +1,7 @@
 # notesync
 
+> **This is a demo repo.** It is one of three that show [meshwork](https://github.com/jbrjake/meshwork) tracking work across projects: this library, the [notes app](https://github.com/jbrjake/meshwork-demo-notes-cli) that syncs through it, and the [portfolio](https://github.com/jbrjake/meshwork-demo-notes-portfolio) that registers both. The agent sessions in the history after the `story/0-day0` tag are staged: a script performs them with real meshwork commands, real code changes and real outputs. To replay them, clone the portfolio repo and run `story/replay.sh`; it needs git, cargo and the network.
+
 Document replication for apps that sync documents between devices. Each device keeps a replica: a directory holding an append-only log of changes. Two replicas sync by trading the changes the other has not seen, and every replica resolves conflicts the same way, so devices that have seen the same changes show the same documents.
 
 notesync speaks documents and fields, never any one app's data. Moving changes between devices (files, a server, a cable) is the caller's job.
