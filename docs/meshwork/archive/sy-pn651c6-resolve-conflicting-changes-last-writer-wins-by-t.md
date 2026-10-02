@@ -1,7 +1,7 @@
 ---
 id: sy-pn651c6
 title: Resolve conflicting changes last-writer-wins by timestamp
-status: open
+status: done
 category: merge
 verify: run cargo test lww_
 docs:
@@ -21,3 +21,5 @@ This trusts device clocks, as the protocol says: a device whose clock runs fast 
 ## log
 - 2026-10-02T17:17Z created
 - 2026-10-02T17:17Z cover docs/PROTOCOL.md#sp-conflict-resolution @706c89c1367e
+- 2026-10-02T17:17Z open→doing — claimed by claude (602c381b-d7db-491e-8df6-85682e6152ed)
+- 2026-10-02T17:18Z doing→done — verify exit 0 @ e309fa3+1
