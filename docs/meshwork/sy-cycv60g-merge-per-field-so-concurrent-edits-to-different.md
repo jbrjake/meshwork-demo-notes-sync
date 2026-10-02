@@ -7,6 +7,10 @@ verify: run cargo test per_field_merge
 docs: [docs/PROTOCOL.md#conflict-resolution-sp-conflict-resolution]
 status: open
 created: 2026-10-02T17:21Z
+handoff: |
+  notesync v0.2.0 stamps changes with hybrid logical clocks. Per-field
+  merge should compare per-field HLC stamps, never wall-clock time —
+  PROTOCOL.md, Change timestamps.
 ---
 A change replaces the whole document, so when one device edits a document's title and another edits its body, only one of the two edits survives: the winning change carries its stale copy of the other field.
 
@@ -14,3 +18,4 @@ Resolve per field instead. Each field takes its value from the latest change tha
 
 ## log
 - 2026-10-02T17:21Z created
+- 2026-10-02T17:52Z handoff by claude (sync-1)
