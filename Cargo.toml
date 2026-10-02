@@ -3,6 +3,7 @@ name = "meshwork-demo-notes-sync"
 version = "0.2.0"
 edition = "2021"
 description = "Document replication for apps that sync documents between devices."
+license = "MIT"
 publish = false
 
 [lib]
