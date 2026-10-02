@@ -6,6 +6,12 @@
 //! caller's concern. The contract is `docs/PROTOCOL.md`.
 
 mod change;
+mod clock;
 pub mod log;
+mod merge;
+mod replica;
+mod vv;
 
-pub use change::{Change, Fields};
+pub use change::{Change, Doc, Fields};
+pub use clock::{Clock, ManualClock, SystemClock};
+pub use replica::Replica;
