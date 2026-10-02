@@ -1,0 +1,6 @@
+# Lint flags live here, never in a script's environment: RUSTFLAGS is part of
+# every unit's fingerprint, so a gate that exported it would keep a second
+# copy of the build beside the one `cargo test` and the editor use.
+[build]
+rustflags = ["-D", "warnings"]
+rustdocflags = ["-D", "warnings"]
