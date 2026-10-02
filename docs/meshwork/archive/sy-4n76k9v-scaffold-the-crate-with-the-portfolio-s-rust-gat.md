@@ -1,11 +1,10 @@
 ---
 id: sy-4n76k9v
 title: Scaffold the crate with the portfolio's Rust gate scaffold
-status: doing
+status: done
 category: build
 verify: "all(contains Cargo.toml /^\\[profile\\.dev\\]/, exists .cargo/config.toml, exists rust-toolchain.toml, exists tests/notesync/main.rs)"
 created: 2026-10-02T17:13Z
-claimed-by: claude (602c381b-d7db-491e-8df6-85682e6152ed)
 ---
 
 A std-only library crate, `meshwork-demo-notes-sync`, imported as `notesync`, on Rust 1.97.0.
@@ -19,3 +18,4 @@ The scaffold goes in with the first code:
 ## log
 - 2026-10-02T17:13Z created
 - 2026-10-02T17:13Z open→doing — claimed by claude (602c381b-d7db-491e-8df6-85682e6152ed)
+- 2026-10-02T17:14Z doing→done — verify exit 0 @ 2d5d5b7+1
