@@ -2,6 +2,7 @@
 //! into a single binary.
 
 mod clock;
+mod hlc;
 mod log;
 mod merge;
 mod sync;
@@ -29,6 +30,7 @@ pub fn change(device: &str, seq: u64, timestamp_ms: u64, doc: &str, body: &str) 
         device: device.to_string(),
         seq,
         timestamp_ms,
+        counter: 0,
         doc: doc.to_string(),
         fields: fields(&[("body", body)]),
     }
