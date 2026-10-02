@@ -1,7 +1,7 @@
 ---
 id: sy-xejvc9k
 title: Say in the README that conflict resolution trusts device clocks
-status: open
+status: done
 category: docs
 verify: "all(exists README.md, contains README.md /trusts device clocks/)"
 docs:
@@ -13,3 +13,5 @@ The README introduces the library to whoever is deciding whether to sync through
 
 ## log
 - 2026-10-02T17:19Z created
+- 2026-10-02T17:19Z open→doing — claimed by claude (602c381b-d7db-491e-8df6-85682e6152ed)
+- 2026-10-02T17:19Z doing→done — verify exit 0 @ 6e33503+1
