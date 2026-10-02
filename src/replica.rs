@@ -1,7 +1,8 @@
 use crate::change::{Change, Doc, Fields};
 use crate::clock::Clock;
+use crate::log::{self, Entry};
+use crate::merge;
 use crate::vv::VersionVector;
-use crate::{log, merge};
 use std::collections::BTreeMap;
 use std::fs;
 use std::io;
@@ -18,6 +19,8 @@ pub struct Replica<C: Clock> {
     changes: Vec<Change>,
     docs: BTreeMap<String, Doc>,
     seen: VersionVector,
+    /// The newest timestamp stored, counter included.
+    newest: (u64, u32),
 }
 
 impl<C: Clock> Replica<C> {
@@ -33,9 +36,10 @@ impl<C: Clock> Replica<C> {
             changes: Vec::new(),
             docs: BTreeMap::new(),
             seen: VersionVector::new(),
+            newest: (0, 0),
         };
-        for change in log::read(&replica.log_path())? {
-            replica.remember(change);
+        for entry in log::read_entries(&replica.log_path())? {
+            replica.remember(entry);
         }
         Ok(replica)
     }
@@ -44,16 +48,26 @@ impl<C: Clock> Replica<C> {
         &self.device
     }
 
-    /// Replaces document `doc` with `fields`, stamped by this device's clock.
+    /// Replaces document `doc` with `fields`, stamped by a hybrid logical
+    /// clock: this device's wall clock, or just past the newest timestamp it
+    /// has stored if that is later. The change sorts after every change this
+    /// replica has stored.
     pub fn put(&mut self, doc: &str, fields: Fields) -> io::Result<Change> {
+        let wall = self.clock.now_ms();
+        let (timestamp_ms, counter) = if wall > self.newest.0 {
+            (wall, 0)
+        } else {
+            (self.newest.0, self.newest.1 + 1)
+        };
         let change = Change {
             device: self.device.clone(),
             seq: self.seen.get(&self.device) + 1,
-            timestamp_ms: self.clock.now_ms(),
+            timestamp_ms,
+            counter,
             doc: doc.to_string(),
             fields,
         };
-        self.store(change.clone())?;
+        self.store(change.clone(), wall)?;
         Ok(change)
     }
 
@@ -101,7 +115,8 @@ impl<C: Clock> Replica<C> {
                     ),
                 ));
             }
-            self.store(change)?;
+            let observed_ms = self.clock.now_ms();
+            self.store(change, observed_ms)?;
             new += 1;
         }
         Ok(new)
@@ -111,21 +126,30 @@ impl<C: Clock> Replica<C> {
         self.dir.join("changes.log")
     }
 
-    fn store(&mut self, change: Change) -> io::Result<()> {
-        log::append(&self.log_path(), &change)?;
-        self.remember(change);
+    fn store(&mut self, change: Change, observed_ms: u64) -> io::Result<()> {
+        let entry = Entry {
+            change,
+            observed_ms,
+        };
+        log::append(&self.log_path(), &entry)?;
+        self.remember(entry);
         Ok(())
     }
 
-    fn remember(&mut self, change: Change) {
+    fn remember(&mut self, entry: Entry) {
+        let Entry {
+            change,
+            observed_ms,
+        } = entry;
         self.seen.observe(&change);
+        self.newest = self.newest.max(change.stamp());
         let replaces = self
             .docs
             .get(&change.doc)
             .is_none_or(|current| merge::wins(&change, current));
         if replaces {
             self.docs
-                .insert(change.doc.clone(), Doc::from_change(&change));
+                .insert(change.doc.clone(), Doc::from_change(&change, observed_ms));
         }
         self.changes.push(change);
     }

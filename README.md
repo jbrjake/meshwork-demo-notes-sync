@@ -12,7 +12,7 @@ The contract is [docs/PROTOCOL.md](docs/PROTOCOL.md).
 
 ```toml
 [dependencies]
-notesync = { package = "meshwork-demo-notes-sync", git = "https://github.com/jbrjake/meshwork-demo-notes-sync", tag = "v0.1.0" }
+notesync = { package = "meshwork-demo-notes-sync", git = "https://github.com/jbrjake/meshwork-demo-notes-sync", tag = "v0.2.0" }
 ```
 
 ```rust
@@ -40,11 +40,13 @@ A replica's device id is its directory's name, kept in `<dir>/device`. `ManualCl
 
 ## Conflicts
 
-A change replaces a whole document. When two devices change the same document, the change with the later timestamp wins, and the timestamp is the authoring device's wall clock. Conflict resolution trusts device clocks: a device whose clock runs fast wins conflicts it should lose. Keep device clocks synced.
+A change replaces a whole document. When two devices change the same document, the change with the later timestamp wins. A timestamp is a hybrid logical clock reading: the later of the device's wall clock and the newest timestamp it has stored, plus a counter. So an edit always beats the changes its device had already stored, however fast another device's clock runs. Edits made without seeing each other still race on timestamp, and there a fast clock can still win.
+
+A timestamp can run ahead of every device's clock, so it does not say when an edit happened. `Doc::observed_at_ms()` does: when this replica first stored the winning change, by this replica's clock.
 
 ## On disk
 
-`<dir>/changes.log` holds one change per line, in the order the replica stored it, whether it made the change or received it. Columns are tab-separated: device, sequence number, timestamp in milliseconds, document id, and the fields as `key=value` pairs joined by `;`. Tab, newline, backslash, `;` and `=` are backslash-escaped.
+`<dir>/changes.log` holds one change per line, in the order the replica stored it, whether it made the change or received it. Columns are tab-separated: device, sequence number, timestamp in milliseconds, document id, the fields as `key=value` pairs joined by `;`, the timestamp's counter, and when this replica observed the change. Tab, newline, backslash, `;` and `=` are backslash-escaped. Logs written by v0.1 have only the first five columns and still load.
 
 ## Develop
 
