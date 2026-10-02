@@ -1,11 +1,11 @@
 ---
 id: sy-swmx1f7
 title: Persist each replica's changes as an append-only log
-status: open
+status: done
 category: storage
 verify: run cargo test log_
 docs:
-  - docs/PROTOCOL.md#sp-changes
+  - docs/PROTOCOL.md#changes-sp-changes
 created: 2026-10-02T17:16Z
 ---
 
@@ -15,3 +15,5 @@ Columns are tab-separated: `device`, `seq`, `timestamp_ms`, `doc`, `fields`. Fie
 
 ## log
 - 2026-10-02T17:16Z created
+- 2026-10-02T17:16Z open→doing — claimed by claude (602c381b-d7db-491e-8df6-85682e6152ed)
+- 2026-10-02T17:17Z doing→done — verify exit 0 @ 73d1f63+1
