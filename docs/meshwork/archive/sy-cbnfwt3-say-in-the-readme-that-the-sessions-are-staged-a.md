@@ -1,7 +1,7 @@
 ---
 id: sy-cbnfwt3
 title: Say in the README that the sessions are staged and how to replay them
-status: open
+status: done
 category: docs
 verify: "all(exists README.md, contains README.md /story\\/replay\\.sh/)"
 created: 2026-10-02T17:21Z
@@ -13,3 +13,5 @@ This lands at day 0 because re-recording the story resets `main` to the `story/0
 
 ## log
 - 2026-10-02T17:21Z created
+- 2026-10-02T17:21Z open→doing — claimed by claude (602c381b-d7db-491e-8df6-85682e6152ed)
+- 2026-10-02T17:21Z doing→done — verify exit 0 @ 2ca6fdd+1
