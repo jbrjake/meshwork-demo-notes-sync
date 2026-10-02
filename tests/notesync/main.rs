@@ -4,6 +4,7 @@
 mod clock;
 mod log;
 mod merge;
+mod sync;
 
 use notesync::{Change, Fields};
 use std::path::PathBuf;

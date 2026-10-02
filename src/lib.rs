@@ -15,3 +15,4 @@ mod vv;
 pub use change::{Change, Doc, Fields};
 pub use clock::{Clock, ManualClock, SystemClock};
 pub use replica::Replica;
+pub use vv::VersionVector;

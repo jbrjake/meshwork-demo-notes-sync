@@ -66,6 +66,21 @@ impl<C: Clock> Replica<C> {
         self.docs.values()
     }
 
+    /// The highest sequence number this replica has stored from each device.
+    pub fn seen(&self) -> VersionVector {
+        self.seen.clone()
+    }
+
+    /// The changes this replica has stored that `seen` does not cover, in the
+    /// order it stored them.
+    pub fn changes_since(&self, seen: &VersionVector) -> Vec<Change> {
+        self.changes
+            .iter()
+            .filter(|change| !seen.has_seen(change))
+            .cloned()
+            .collect()
+    }
+
     /// Stores the changes this replica has not seen; changes it has seen are
     /// skipped, so applying the same changes twice is harmless. Each device's
     /// changes must arrive in its sequence order, as an exchange delivers them.
